@@ -10,8 +10,8 @@ namespace JHipsterNetSampleApplication.Data {
         UserRole,
         IdentityUserLogin<string>,
         IdentityRoleClaim<string>,
-        IdentityUserToken<string>
-    > {
+        IdentityUserToken<string>> {
+
         public ApplicationDatabaseContext(DbContextOptions<ApplicationDatabaseContext> options) : base(options)
         {
         }
@@ -23,8 +23,10 @@ namespace JHipsterNetSampleApplication.Data {
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // TODO: this should be remove, prefer using identity to database configuration.
             builder.Entity<UserRole>(userRole => {
-                userRole.HasKey(ur => new {ur.UserId, ur.RoleId});
+                userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
 
                 userRole.HasOne(ur => ur.Role)
                     .WithMany(r => r.UserRoles)
