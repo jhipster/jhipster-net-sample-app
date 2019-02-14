@@ -15,8 +15,8 @@ using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace JHipsterNetSampleApplication.Test.Web.Rest {
-    public class UserResourceIntTest {
-        public UserResourceIntTest()
+    public class UserControllerIntTest {
+        public UserControllerIntTest()
         {
             _factory = new NhipsterWebApplicationFactory<Startup>();
             _client = _factory.CreateClient();

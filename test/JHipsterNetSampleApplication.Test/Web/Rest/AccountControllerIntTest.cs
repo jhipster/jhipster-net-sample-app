@@ -18,8 +18,8 @@ using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace JHipsterNetSampleApplication.Test.Web.Rest {
-    public class AccountResourceIntTest {
-        public AccountResourceIntTest()
+    public class AccountControllerIntTest {
+        public AccountControllerIntTest()
         {
             _factory = new NhipsterWebApplicationFactory<Startup>();
 //            _factory.WithWebHostBuilder(builder => {

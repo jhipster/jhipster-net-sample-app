@@ -15,14 +15,14 @@ using Microsoft.Extensions.Logging;
 namespace JHipsterNetSampleApplication.Web.Rest {
     [Route("api")]
     [ApiController]
-    public class AccountResource : ControllerBase {
-        private readonly ILogger<AccountResource> _log;
+    public class AccountController : ControllerBase {
+        private readonly ILogger<AccountController> _log;
         private readonly IMailService _mailService;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _userMapper;
         private readonly IUserService _userService;
 
-        public AccountResource(ILogger<AccountResource> log, UserManager<User> userManager, IUserService userService,
+        public AccountController(ILogger<AccountController> log, UserManager<User> userManager, IUserService userService,
             IMapper userMapper, IMailService mailService)
         {
             _log = log;

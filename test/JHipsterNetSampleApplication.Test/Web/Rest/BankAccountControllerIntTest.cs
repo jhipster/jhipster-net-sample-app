@@ -11,8 +11,8 @@ using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace JHipsterNetSampleApplication.Test.Web.Rest {
-    public class BankAccountResourceIntTest {
-        public BankAccountResourceIntTest()
+    public class BankAccountControllerIntTest {
+        public BankAccountControllerIntTest()
         {
             _factory = new NhipsterWebApplicationFactory<Startup>();
             _client = _factory.CreateClient();
