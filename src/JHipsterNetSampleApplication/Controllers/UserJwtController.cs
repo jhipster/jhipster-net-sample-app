@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace JHipsterNetSampleApplication.Web.Rest {
+namespace JHipsterNetSampleApplication.Controllers {
     [Route("api")]
     [ApiController]
     public class UserJwtController : ControllerBase {

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace JHipsterNetSampleApplication.Web.Rest {
+namespace JHipsterNetSampleApplication.Controllers {
     [Route("api")]
     [ApiController]
     public class UserController : ControllerBase {

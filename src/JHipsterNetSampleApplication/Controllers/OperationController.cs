@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace JHipsterNetSampleApplication.Web.Rest {
+namespace JHipsterNetSampleApplication.Controllers {
     [Authorize]
     [Route("api")]
     [ApiController]
