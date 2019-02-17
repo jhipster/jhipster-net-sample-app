@@ -55,42 +55,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Identity {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [Fact]
-        public async Task TestAuthenticatedUser()
-        {
-            var client = _factory.CreateClient();
-            var userManager = _factory.GetRequiredService<UserManager<User>>();
-            var passwordHasher = _factory.GetRequiredService<IPasswordHasher<User>>();
-
-            var user = new User {
-                UserName = "activate-account",
-                Email = "activate-account@example.com",
-                PasswordHash = passwordHasher.HashPassword(null, "test"),
-                EmailConfirmed = true
-            };
-
-            await userManager.CreateAsync(user);
-
-            var login = new Dictionary<string, string> {
-                { "grant_type", "password" },
-                { "username", "activate-account" },
-                { "password", "test" }
-            };
-
-            var response = await client.PostAsync("/connect/token", TestUtil.ToFormUrlEncodedContent(login));
-            var json = JToken.Parse(await response.Content.ReadAsStringAsync());
-            var access_token = json.SelectToken("$.access_token").Value<string>();
-
-            client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", access_token);
-
-            response = await client.GetAsync("/api/account/authenticate");
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            responseContent.Should().Contain("test");
-        }
-
         //        [Fact]
         //        public async Task TestChangePassword()
         //        {

@@ -8,6 +8,7 @@ namespace JHipsterNetSampleApplication.Startup {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+    using OpenIddict.Validation;
     using System;
 
     public static class SecurityConfiguration {
@@ -27,7 +28,7 @@ namespace JHipsterNetSampleApplication.Startup {
             });
 
             @this.AddAuthentication(options => {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = OpenIddictValidationDefaults.AuthenticationScheme;
             });
 
             @this.AddOpenIddict()
