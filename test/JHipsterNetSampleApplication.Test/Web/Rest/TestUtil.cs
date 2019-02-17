@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -12,6 +13,11 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public static HttpContent ToJsonContent(object model)
         {
             return ToJsonContent(model, Encoding.UTF8);
+        }
+
+        public static HttpContent ToFormUrlEncodedContent(Dictionary<string, string> model)
+        {
+            return new FormUrlEncodedContent(model);
         }
 
         public static HttpContent ToJsonContent(object model, Encoding encoding)

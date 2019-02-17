@@ -1,8 +1,10 @@
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 
 namespace JHipsterNetSampleApplication.Security.Jwt {
+
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authentication;
+
     public class RoleClaimsTransformation : IClaimsTransformation {
         private readonly ITokenProvider _tokenProvider;
 

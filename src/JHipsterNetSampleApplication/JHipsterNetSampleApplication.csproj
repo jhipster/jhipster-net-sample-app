@@ -22,13 +22,18 @@
         <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="2.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
         <PackageReference Include="BCrypt.Net-Next" Version="3.1.3" />
         <PackageReference Include="LanguageExt.Core" Version="3.1.15" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+        <PackageReference Include="OpenIddict" Version="2.0.0" />
+        <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0" />
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\JHipsterNet.Mvc\JHipsterNet.Mvc.csproj" />
+        <ProjectReference Include="..\..\JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj" />
+        <ProjectReference Include="..\..\JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj" />
         <ProjectReference Include="..\JHipsterNet\JHipsterNet.csproj" />
     </ItemGroup>
 
@@ -304,6 +309,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Areas\BankAccount\v1\Controllers\BankAccountController.cs" />
+      <Compile Remove="Areas\BankAccount\v1\Controllers\LabelController.cs" />
+      <Compile Remove="Areas\BankAccount\v1\Controllers\OperationController.cs" />
+      <Compile Remove="Areas\BankAccount\v1\Models\BankAccountModel.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Areas\Identity\v1\Controllers\AccountController.cs" />
+      <None Remove="Areas\Identity\v1\Models\ChangePasswordModel.cs" />
+      <None Remove="Areas\Identity\v1\Models\LoginModel.cs" />
+      <None Remove="Areas\Identity\v1\Models\RegisterAccountModel.cs" />
+      <None Remove="Areas\Identity\v1\Models\UpdateAccountModel.cs" />
+      <None Remove="Areas\Identity\v1\Models\UserAccountModel.cs" />
       <None Remove="bin\Debug\netcoreapp2.2\jhipster-net-sample-application.deps.json" />
       <None Remove="bin\Debug\netcoreapp2.2\jhipster-net-sample-application.dll" />
       <None Remove="bin\Debug\netcoreapp2.2\jhipster-net-sample-application.pdb" />
@@ -312,6 +330,7 @@
       <None Remove="bin\Debug\netcoreapp2.2\JHipsterNet.dll" />
       <None Remove="bin\Debug\netcoreapp2.2\JHipsterNet.pdb" />
       <None Remove="JHipsterNetSampleApplication.csproj" />
+      <None Remove="JHipsterNetSampleApplication.csproj.user" />
       <None Remove="obj\Debug\netcoreapp2.2\jhipster-net-sample-application.dll" />
       <None Remove="obj\Debug\netcoreapp2.2\jhipster-net-sample-application.pdb" />
       <None Remove="obj\Debug\netcoreapp2.2\JHipsterNetSampleApplication.AssemblyInfo.cs" />
@@ -331,6 +350,13 @@
       <None Remove="obj\JHipsterNetSampleApplication.csproj.nuget.g.props" />
       <None Remove="obj\JHipsterNetSampleApplication.csproj.nuget.g.targets" />
       <None Remove="obj\project.assets.json" />
+      <None Remove="Startup\AutoMapperStartup.cs" />
+      <None Remove="Startup\DatabaseStartup.cs" />
+      <None Remove="Startup\MvcStartup.cs" />
+      <None Remove="Startup\NhipsterStartup.cs" />
+      <None Remove="Startup\ProblemDetailsStartup.cs" />
+      <None Remove="Startup\SecurityStartup.cs" />
+      <None Remove="Startup\SwaggerStartup.cs" />
     </ItemGroup>
 
 
