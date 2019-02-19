@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <AssemblyName>jhipster-net-sample-application</AssemblyName>
+        <AssemblyName>JHipsterNetSampleApplication</AssemblyName>
         <Version>0.0.1-SNAPSHOT</Version>
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <LangVersion>latest</LangVersion>
