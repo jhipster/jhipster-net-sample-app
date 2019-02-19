@@ -13,13 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3C6E2026-9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JHipsterNetSampleApplication.Test", "test\JHipsterNetSampleApplication.Test\JHipsterNetSampleApplication.Test.csproj", "{DB2561B5-8867-4A54-BFD7-C2595E730A51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHipsterNetSampleApplication.Domain", "JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj", "{4391B804-EE05-4049-B790-99EBE72BA732}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHipsterNetSampleApplication.Domain", "src\JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj", "{4391B804-EE05-4049-B790-99EBE72BA732}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHipsterNetSampleApplication.Data.EntityFramework", "JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj", "{557CD17F-17B4-4887-B51F-505C5278BC83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHipsterNetSampleApplication.Data.EntityFramework", "src\JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj", "{557CD17F-17B4-4887-B51F-505C5278BC83}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{2AF6DB34-CA5C-4F91-BA6C-1BC5CC87C2EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHipsterNet.Mvc", "JHipsterNet.Mvc\JHipsterNet.Mvc.csproj", "{74BD0FA3-DACA-48AA-B1C5-4D39ED4E9E18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHipsterNet.Mvc", "src\JHipsterNet.Mvc\JHipsterNet.Mvc.csproj", "{74BD0FA3-DACA-48AA-B1C5-4D39ED4E9E18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
