@@ -31,13 +31,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\JHipsterNet.Mvc\JHipsterNet.Mvc.csproj" />
-        <ProjectReference Include="..\..\JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj" />
-        <ProjectReference Include="..\..\JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj" />
-        <ProjectReference Include="..\JHipsterNet\JHipsterNet.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <!-- Don't publish the SPA source files, but do show them in the project files list -->
         <Compile Remove="bin\**" />
         <Compile Remove="obj\**" />
@@ -359,9 +352,10 @@
       <None Remove="Startup\SwaggerStartup.cs" />
     </ItemGroup>
 
-
     <ItemGroup>
-      <ProjectReference Include="..\JHipsterNet\JHipsterNet.csproj" />
+      <ProjectReference Include="..\JHipsterNet.Mvc\JHipsterNet.Mvc.csproj" />
+      <ProjectReference Include="..\JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj" />
+      <ProjectReference Include="..\JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj" />
     </ItemGroup>
 
 
