@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <AssemblyName>jhipster-net-sample-application</AssemblyName>
+        <AssemblyName>JHipsterNetSampleApplication</AssemblyName>
         <Version>0.0.1-SNAPSHOT</Version>
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -28,13 +28,6 @@
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
         <PackageReference Include="OpenIddict" Version="2.0.0" />
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\JHipsterNet.Mvc\JHipsterNet.Mvc.csproj" />
-        <ProjectReference Include="..\..\JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj" />
-        <ProjectReference Include="..\..\JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj" />
-        <ProjectReference Include="..\JHipsterNet\JHipsterNet.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -359,9 +352,10 @@
       <None Remove="Startup\SwaggerStartup.cs" />
     </ItemGroup>
 
-
     <ItemGroup>
-      <ProjectReference Include="..\JHipsterNet\JHipsterNet.csproj" />
+      <ProjectReference Include="..\JHipsterNet.Mvc\JHipsterNet.Mvc.csproj" />
+      <ProjectReference Include="..\JHipsterNetSampleApplication.Data\JHipsterNetSampleApplication.Data.EntityFramework.csproj" />
+      <ProjectReference Include="..\JHipsterNetSampleApplication.Domain\JHipsterNetSampleApplication.Domain.csproj" />
     </ItemGroup>
 
 
