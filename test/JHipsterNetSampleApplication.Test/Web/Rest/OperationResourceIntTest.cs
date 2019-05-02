@@ -54,7 +54,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             _operation = CreateEntity();
         }
 
-        [Fact]
+        // This unit test has become useless because in C# a decimal can't be null, so the field will always have a value.
+        /*[Fact]
         public async Task CheckAmountIsRequired()
         {
             var databaseSizeBeforeTest = _applicationDatabaseContext.Operations.Count();
@@ -68,9 +69,10 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             var operationList = _applicationDatabaseContext.Operations.ToList();
             operationList.Count().Should().Be(databaseSizeBeforeTest);
-        }
+        }*/
 
-        [Fact]
+        // This unit test has become useless because in C# a DateTime can't be null, so the field will always have a value.
+        /*[Fact]
         public async Task CheckDateIsRequired()
         {
             var databaseSizeBeforeTest = _applicationDatabaseContext.Operations.Count();
@@ -84,7 +86,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             var operationList = _applicationDatabaseContext.Operations.ToList();
             operationList.Count().Should().Be(databaseSizeBeforeTest);
-        }
+        }*/
 
         [Fact]
         public async Task CreateOperation()
@@ -110,7 +112,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var databaseSizeBeforeCreate = _applicationDatabaseContext.Operations.Count();
 
             // Create the Operation with an existing ID
-            _operation.Id = "id";
+            _operation.Id = 1L;
 
             // An entity with an existing ID cannot be created, so this API call must fail
             var response = await _client.PostAsync("/api/operations", TestUtil.ToJsonContent(_operation));
@@ -119,6 +121,37 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             // Validate the Operation in the database
             var operationList = _applicationDatabaseContext.Operations.ToList();
             operationList.Count().Should().Be(databaseSizeBeforeCreate);
+        }
+
+        [Fact]
+        public async Task CreateOperationWithExistingReferencedEntity()
+        {
+            // Create a BankAccount to referenced
+            var bankAccount = new BankAccount {
+                Name = "AAAAAAAAAA",
+                Balance = new decimal(1.0)
+            };
+            _applicationDatabaseContext.BankAccounts.Add(bankAccount);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            bankAccount = _applicationDatabaseContext.BankAccounts.ToList()[0];
+
+            var databaseSizeBeforeCreate = _applicationDatabaseContext.Operations.Count();
+
+            // Set the referencing field
+            _operation.BankAccount = bankAccount;
+
+            // Create the Operation
+            var response = await _client.PostAsync("/api/operations", TestUtil.ToJsonContent(_operation));
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            // Validate the Operation in the database
+            var operationList = _applicationDatabaseContext.Operations.ToList();
+            operationList.Count().Should().Be(databaseSizeBeforeCreate + 1);
+            var testOperation = operationList[operationList.Count - 1];
+            testOperation.Date.Should().Be(DefaultDate);
+            testOperation.Description.Should().Be(DefaultDescription);
+            testOperation.Amount.Should().Be(DefaultAmount);
+            testOperation.BankAccount.Should().Be(bankAccount);
         }
 
         [Fact]
@@ -176,7 +209,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         [Fact]
         public async Task GetNonExistingOperation()
         {
-            var response = await _client.GetAsync("/api/operations/unknown");
+            var response = await _client.GetAsync("/api/operations/" + long.MaxValue);
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
@@ -225,7 +258,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedOperation =
                 await _applicationDatabaseContext.Operations.SingleOrDefaultAsync(it => it.Id == _operation.Id);
             // Disconnect from session so that the updates on updatedOperation are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedOperation.Date = UpdatedDate;
             updatedOperation.Description = UpdatedDescription;
             updatedOperation.Amount = UpdatedAmount;

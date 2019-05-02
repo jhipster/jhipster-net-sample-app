@@ -82,7 +82,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var databaseSizeBeforeCreate = _applicationDatabaseContext.Labels.Count();
 
             // Create the Label with an existing ID
-            _label.Id = "id";
+            _label.Id = 1L;
 
             // An entity with an existing ID cannot be created, so this API call must fail
             var response = await _client.PostAsync("/api/labels", TestUtil.ToJsonContent(_label));
@@ -140,7 +140,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             var json = JToken.Parse(await response.Content.ReadAsStringAsync());
             json.SelectTokens("$.[*].id").Should().Contain(_label.Id);
-            json.SelectTokens("$.[*].name").Should().Contain(DefaultName);
+            json.SelectTokens("$.[*].label").Should().Contain(DefaultName);
         }
 
         [Fact]
@@ -156,13 +156,13 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             var json = JToken.Parse(await response.Content.ReadAsStringAsync());
             json.SelectTokens("$.id").Should().Contain(_label.Id);
-            json.SelectTokens("$.name").Should().Contain(DefaultName);
+            json.SelectTokens("$.label").Should().Contain(DefaultName);
         }
 
         [Fact]
         public async Task GetNonExistingLabel()
         {
-            var response = await _client.GetAsync("/api/labels/unknown");
+            var response = await _client.GetAsync("/api/labels/" + long.MaxValue);
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
@@ -178,7 +178,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             // Update the label
             var updatedLabel = await _applicationDatabaseContext.Labels.SingleOrDefaultAsync(it => it.Id == _label.Id);
             // Disconnect from session so that the updates on updatedLabel are not directly saved in db
-//TODO detach
+            //TODO detach
             updatedLabel.Name = UpdatedName;
 
             var response = await _client.PutAsync("/api/labels", TestUtil.ToJsonContent(updatedLabel));
