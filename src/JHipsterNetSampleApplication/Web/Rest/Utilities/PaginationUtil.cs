@@ -31,7 +31,7 @@ namespace JHipsterNetSampleApplication.Web.Rest.Utilities {
 
             link += $"<{GenerateUri(baseUrl, lastPage, page.Size)}>; rel=\"last\",";
             link += $"<{GenerateUri(baseUrl, 0, page.Size)}>; rel=\"first\"";
-            headers.Add(HeaderNames.From, link);
+            headers.Add("Link", link);
 
             return headers;
         }

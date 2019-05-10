@@ -43,6 +43,17 @@ namespace JHipsterNetSampleApplication.Data {
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<OperationLabel>()
+                .HasKey(t => new { t.OperationId, t.LabelId });
+
+            builder.Entity<OperationLabel>()
+                .HasOne(pt => pt.Operation)
+                .WithMany("OperationLabels");
+
+            builder.Entity<OperationLabel>()
+                .HasOne(pt => pt.Label)
+                .WithMany("OperationLabels");
         }
     }
 }

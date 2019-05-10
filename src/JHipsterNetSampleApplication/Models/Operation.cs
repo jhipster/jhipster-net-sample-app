@@ -1,3 +1,4 @@
+using JHipsterNetSampleApplication.Models.ManyToManyTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,23 +7,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace JHipsterNetSampleApplication.Models {
     [Table("operation")]
     public class Operation {
+        public Operation()
+        {
+            Labels = new JoinCollectionFacade<Label, Operation, OperationLabel>(this, OperationLabels);
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
         [Required] [Column("nhi_date")] public DateTime Date { get; set; }
-
-
+        
         [Column("description")] public string Description { get; set; }
 
         [Required]
         [Column("amount", TypeName = "decimal(10,2)")]
         public decimal Amount { get; set; }
 
+        //public int BankAccountId { get; set; }
         //        [JsonIgnore]
         public BankAccount BankAccount { get; set; }
 
-        //        public IList<OperationLabel> OperationLabels { get; set; }
+        private ICollection<OperationLabel> OperationLabels { get; } = new List<OperationLabel>();
+
+        [NotMapped]
+        public ICollection<Label> Labels { get; }
 
         public override bool Equals(object obj)
         {

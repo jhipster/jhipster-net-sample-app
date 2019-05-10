@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using JHipsterNetSampleApplication.Models.ManyToManyTools;
 using Newtonsoft.Json;
 
 namespace JHipsterNetSampleApplication.Models {
     [Table("label")]
     public class Label {
+        public Label() => Operations = new JoinCollectionFacade<Operation, Label, OperationLabel>(this, OperationLabels);
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -20,7 +23,11 @@ namespace JHipsterNetSampleApplication.Models {
         public string Name { get; set; }
 
         //        [JsonIgnore]
-        //        public IList<OperationLabel> OperationLabels { get; set; }
+        private ICollection<OperationLabel> OperationLabels { get; } = new List<OperationLabel>();
+
+        [NotMapped]
+        [JsonIgnore]
+        public ICollection<Operation> Operations { get; }
 
         public override bool Equals(object obj)
         {

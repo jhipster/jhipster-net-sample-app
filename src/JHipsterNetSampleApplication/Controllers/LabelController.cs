@@ -64,7 +64,8 @@ namespace JHipsterNetSampleApplication.Controllers {
         public ActionResult<IEnumerable<Label>> GetAllLabels(IPageable pageable)
         {
             _log.LogDebug("REST request to get a page of Labels");
-            var page = _applicationDatabaseContext.Labels.UsePageable(pageable);
+            var page = _applicationDatabaseContext.Labels
+                .UsePageable(pageable);
             var headers = PaginationUtil.GeneratePaginationHttpHeaders(page, HttpContext.Request);
             return Ok(page.Content).WithHeaders(headers);
         }
@@ -73,9 +74,8 @@ namespace JHipsterNetSampleApplication.Controllers {
         public async Task<IActionResult> GetLabel([FromRoute] long id)
         {
             _log.LogDebug($"REST request to get Label : {id}");
-            var result =
-                await _applicationDatabaseContext.Labels.SingleOrDefaultAsync(label =>
-                    label.Id == id);
+            var result = await _applicationDatabaseContext.Labels
+                .SingleOrDefaultAsync(label => label.Id == id);
             return ActionResultUtil.WrapOrNotFound(result);
         }
 
