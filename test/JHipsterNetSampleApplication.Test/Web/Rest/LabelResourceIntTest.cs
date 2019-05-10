@@ -178,7 +178,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             // Update the label
             var updatedLabel = await _applicationDatabaseContext.Labels.SingleOrDefaultAsync(it => it.Id == _label.Id);
             // Disconnect from session so that the updates on updatedLabel are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedLabel.Name = UpdatedName;
 
             var response = await _client.PutAsync("/api/labels", TestUtil.ToJsonContent(updatedLabel));

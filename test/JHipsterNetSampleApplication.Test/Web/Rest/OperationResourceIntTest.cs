@@ -54,40 +54,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             _operation = CreateEntity();
         }
 
-        // This unit test has become useless because in C# a decimal can't be null, so the field will always have a value.
-        /*[Fact]
-        public async Task CheckAmountIsRequired()
-        {
-            var databaseSizeBeforeTest = _applicationDatabaseContext.Operations.Count();
-
-            // set the field null
-            _operation.Amount = null;
-
-            // Create the Operation, which fails.
-            var response = await _client.PostAsync("/api/operations", TestUtil.ToJsonContent(_operation));
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var operationList = _applicationDatabaseContext.Operations.ToList();
-            operationList.Count().Should().Be(databaseSizeBeforeTest);
-        }*/
-
-        // This unit test has become useless because in C# a DateTime can't be null, so the field will always have a value.
-        /*[Fact]
-        public async Task CheckDateIsRequired()
-        {
-            var databaseSizeBeforeTest = _applicationDatabaseContext.Operations.Count();
-
-            // set the field null
-            _operation.Date = null;
-
-            // Create the Operation, which fails.
-            var response = await _client.PostAsync("/api/operations", TestUtil.ToJsonContent(_operation));
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var operationList = _applicationDatabaseContext.Operations.ToList();
-            operationList.Count().Should().Be(databaseSizeBeforeTest);
-        }*/
-
         [Fact]
         public async Task CreateOperation()
         {
@@ -258,7 +224,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedOperation =
                 await _applicationDatabaseContext.Operations.SingleOrDefaultAsync(it => it.Id == _operation.Id);
             // Disconnect from session so that the updates on updatedOperation are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedOperation.Date = UpdatedDate;
             updatedOperation.Description = UpdatedDescription;
             updatedOperation.Amount = UpdatedAmount;

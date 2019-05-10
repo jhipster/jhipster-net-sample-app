@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JHipsterNetSampleApplication.Data.Extensions {
     public static class DbContextExtensions {
-        public static void AddGraph(this DbContext context, object rootObject)
+        public static void AddGraph(this DbContext @this, object rootObject)
         {
-            context.ChangeTracker.TrackGraph(rootObject, e => {
+            @this.ChangeTracker.TrackGraph(rootObject, e => {
                 if (e.Entry.IsKeySet) {
                     e.Entry.State = EntityState.Unchanged;
                 }

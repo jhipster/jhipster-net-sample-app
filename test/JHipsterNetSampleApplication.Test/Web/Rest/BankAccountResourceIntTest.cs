@@ -48,23 +48,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             _bankAccount = CreateEntity();
         }
 
-        // This unit test has become useless because in C# a decimal can't be null, so the field will always have a value.
-        /*[Fact]
-        public async Task CheckBalanceIsRequired()
-        {
-            var databaseSizeBeforeTest = _applicationDatabaseContext.BankAccounts.Count();
-
-            // set the field null
-            _bankAccount.Balance = null;
-
-            // Create the BankAccount, which fails.
-            var response = await _client.PostAsync("/api/bank-accounts", TestUtil.ToJsonContent(_bankAccount));
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var bankAccountList = _applicationDatabaseContext.BankAccounts.ToList();
-            bankAccountList.Count().Should().Be(databaseSizeBeforeTest);
-        }*/
-
         [Fact]
         public async Task CheckNameIsRequired()
         {
@@ -227,7 +210,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedBankAccount =
                 await _applicationDatabaseContext.BankAccounts.SingleOrDefaultAsync(it => it.Id == _bankAccount.Id);
             // Disconnect from session so that the updates on updatedBankAccount are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedBankAccount.Name = UpdatedName;
             updatedBankAccount.Balance = UpdatedBalance;
 
