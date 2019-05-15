@@ -16,7 +16,7 @@ namespace JHipsterNetSampleApplication.Models {
 
         public User User { get; set; }
 
-        public ICollection<Operation> Operations { get; set; } = new List<Operation>();
+        public IList<Operation> Operations { get; set; } = new List<Operation>();
 
         public override bool Equals(object obj)
         {

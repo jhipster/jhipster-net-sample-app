@@ -1,4 +1,4 @@
-using JHipsterNetSampleApplication.Models.ManyToManyTools;
+using JHipsterNetSampleApplication.Models.RelationshipTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,7 @@ namespace JHipsterNetSampleApplication.Models {
     public class Operation {
         public Operation()
         {
-            Labels = new JoinCollectionFacade<Label, Operation, OperationLabel>(this, OperationLabels);
+            Labels = new JoinListFacade<Label, Operation, OperationLabel>(this, OperationLabels);
         }
 
         [Key]
@@ -28,10 +28,10 @@ namespace JHipsterNetSampleApplication.Models {
         //        [JsonIgnore]
         public BankAccount BankAccount { get; set; }
 
-        private ICollection<OperationLabel> OperationLabels { get; } = new List<OperationLabel>();
+        private IList<OperationLabel> OperationLabels { get; } = new List<OperationLabel>();
 
         [NotMapped]
-        public ICollection<Label> Labels { get; }
+        public IList<Label> Labels { get; }
 
         public override bool Equals(object obj)
         {

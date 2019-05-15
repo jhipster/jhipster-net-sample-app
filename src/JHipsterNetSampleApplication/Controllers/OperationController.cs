@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JHipsterNet.Pagination;
 using JHipsterNet.Pagination.Extensions;
@@ -52,7 +53,8 @@ namespace JHipsterNetSampleApplication.Controllers {
             _log.LogDebug($"REST request to update Operation : {operation}");
             if (operation.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
             //TODO catch //DbUpdateConcurrencyException into problem
-            _applicationDatabaseContext.Entry(operation).State = EntityState.Modified;
+            _applicationDatabaseContext.OperationLabels.RemoveNavigationProperty(operation, operation.Id);
+            _applicationDatabaseContext.Update(operation);
             await _applicationDatabaseContext.SaveChangesAsync();
             return Ok(operation).WithHeaders(HeaderUtil.CreateEntityUpdateAlert(EntityName, operation.Id.ToString()));
         }

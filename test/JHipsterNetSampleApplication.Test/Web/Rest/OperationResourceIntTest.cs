@@ -121,6 +121,38 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         }
 
         [Fact]
+        public async Task CreateOperationWithManyToManyAssociation()
+        {
+            // Create a Label to test the ManyToMany association
+            var label = new Label {
+                Name = "AAAAAAAAAA"
+            };
+            _applicationDatabaseContext.Labels.Add(label);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            label = _applicationDatabaseContext.Labels.ToList()[0];
+
+            var databaseSizeBeforeCreate = _applicationDatabaseContext.Operations.Count();
+
+            // Set the referencing field
+            _operation.Labels.Add(label);
+
+            // Create the Operation
+            var response = await _client.PostAsync("/api/operations", TestUtil.ToJsonContent(_operation));
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            // Validate the Operation in the database
+            var operationList = _applicationDatabaseContext.Operations
+                .Include("OperationLabels.Label")
+                .ToList();
+            operationList.Count().Should().Be(databaseSizeBeforeCreate + 1);
+            var testOperation = operationList[operationList.Count - 1];
+            testOperation.Date.Should().Be(DefaultDate);
+            testOperation.Description.Should().Be(DefaultDescription);
+            testOperation.Amount.Should().Be(DefaultAmount);
+            testOperation.Labels[0].Should().Be(label);
+        }
+
+        [Fact]
         public async Task DeleteOperation()
         {
             // Initialize the database
@@ -239,6 +271,111 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             testOperation.Date.Should().Be(UpdatedDate);
             testOperation.Description.Should().Be(UpdatedDescription);
             testOperation.Amount.Should().Be(UpdatedAmount);
+        }
+
+        [Fact]
+        public async Task UpdateOperationWithExistingReferencedEntity()
+        {
+            // Create two BankAccounts to referenced
+            var bankAccount = new BankAccount {
+                Name = "AAAAAAAAAA",
+                Balance = new decimal(1.0)
+            };
+            var updatedBankAccount = new BankAccount {
+                Name = "BBBBBBBBBB",
+                Balance = new decimal(2.0)
+            };
+            _applicationDatabaseContext.BankAccounts.Add(bankAccount);
+            _applicationDatabaseContext.BankAccounts.Add(updatedBankAccount);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            bankAccount = await _applicationDatabaseContext.BankAccounts
+                .SingleOrDefaultAsync(bA => bA.Id == 1);
+            updatedBankAccount = await _applicationDatabaseContext.BankAccounts
+                .SingleOrDefaultAsync(bA => bA.Id == 2);
+
+            // Set the referencing field
+            _operation.BankAccount = bankAccount;
+
+            // Initialize the database with an operation
+            _applicationDatabaseContext.Operations.Add(_operation);
+            await _applicationDatabaseContext.SaveChangesAsync();
+
+            var databaseSizeBeforeUpdate = _applicationDatabaseContext.Operations.Count();
+
+            // Update the operation
+            var updatedOperation = await _applicationDatabaseContext.Operations
+                .SingleOrDefaultAsync(it => it.Id == _operation.Id);
+            // Disconnect from session so that the updates on updatedOperation are not directly saved in db
+//TODO detach
+            updatedOperation.Date = UpdatedDate;
+            updatedOperation.Description = UpdatedDescription;
+            updatedOperation.Amount = UpdatedAmount;
+            updatedOperation.BankAccount = updatedBankAccount;
+
+            var response = await _client.PutAsync("/api/operations", TestUtil.ToJsonContent(updatedOperation));
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            // Validate the Operation in the database
+            var operationList = _applicationDatabaseContext.Operations.ToList();
+            operationList.Count().Should().Be(databaseSizeBeforeUpdate);
+            var testOperation = operationList[operationList.Count - 1];
+            testOperation.Date.Should().Be(UpdatedDate);
+            testOperation.Description.Should().Be(UpdatedDescription);
+            testOperation.Amount.Should().Be(UpdatedAmount);
+            testOperation.BankAccount.Should().Be(updatedBankAccount);
+        }
+
+        [Fact]
+        public async Task UpdateOperationWithManyToManyAssociation()
+        {   
+            // Create two Labels to test the ManyToMany association
+            var label = new Label {
+                Name = "AAAAAAAAAA"
+            };
+            var updatedLabel = new Label {
+                Name = "BBBBBBBBBB"
+            };
+            _applicationDatabaseContext.Labels.Add(label);
+            _applicationDatabaseContext.Labels.Add(updatedLabel);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            label = await _applicationDatabaseContext.Labels
+                .SingleOrDefaultAsync(l => l.Id == 1);
+            updatedLabel = await _applicationDatabaseContext.Labels
+                .SingleOrDefaultAsync(l => l.Id == 2);
+
+            // Set the referencing field
+            _operation.Labels.Add(label);
+
+            // Initialize the database with an operation
+            _applicationDatabaseContext.Operations.Add(_operation);
+            await _applicationDatabaseContext.SaveChangesAsync();
+
+            var databaseSizeBeforeUpdate = _applicationDatabaseContext.Operations.Count();
+
+            // Update the operation
+            var updatedOperation = await _applicationDatabaseContext.Operations
+                .SingleOrDefaultAsync(it => it.Id == _operation.Id);
+            // Disconnect from session so that the updates on updatedOperation are not directly saved in db
+//TODO detach
+            updatedOperation.Date = UpdatedDate;
+            updatedOperation.Description = UpdatedDescription;
+            updatedOperation.Amount = UpdatedAmount;
+            updatedOperation.Labels.Clear();
+            updatedOperation.Labels.Add(updatedLabel);
+
+            var response = await _client.PutAsync("/api/operations", TestUtil.ToJsonContent(updatedOperation));
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            // Validate the Operation in the database
+            var operationList = _applicationDatabaseContext.Operations
+                .Include("OperationLabels.Label")
+                .ToList();
+            operationList.Count().Should().Be(databaseSizeBeforeUpdate);
+            var testOperation = operationList[operationList.Count - 1];
+            testOperation.Date.Should().Be(UpdatedDate);
+            testOperation.Description.Should().Be(UpdatedDescription);
+            testOperation.Amount.Should().Be(UpdatedAmount);
+            testOperation.Labels[0].Should().Be(updatedLabel);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -91,6 +92,39 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             // Validate the Label in the database
             var labelList = _applicationDatabaseContext.Labels.ToList();
             labelList.Count().Should().Be(databaseSizeBeforeCreate);
+        }
+
+        [Fact]
+        public async Task CreateLabelWithManyToManyAssociation()
+        {
+            // Due to JsonIgnore annotation on Operations property, we first create the Label
+            // This allows the operation to create the relationship
+            var databaseSizeBeforeCreate = _applicationDatabaseContext.Labels.Count();
+
+            // Create the Label
+            var response = await _client.PostAsync("/api/labels", TestUtil.ToJsonContent(_label));
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            var testLabel = _applicationDatabaseContext.Labels.ToList()[0];
+
+            // Create an Operation to test the ManyToMany association
+            var operation = new Operation {
+                Date = DateTime.UnixEpoch,
+                Description = "AAAAAAAAAA",
+                Amount = new decimal(1.0)
+            };
+            operation.Labels.Add(testLabel);
+            _applicationDatabaseContext.Operations.Add(operation);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            operation = _applicationDatabaseContext.Operations.ToList()[0];
+
+            // Validate the Label in the database
+            var labelList = _applicationDatabaseContext.Labels
+                .Include("OperationLabels.Operation")
+                .ToList();
+            labelList.Count().Should().Be(databaseSizeBeforeCreate + 1);
+            testLabel = labelList[labelList.Count - 1];
+            testLabel.Name.Should().Be(DefaultName);
+            testLabel.Operations[0].Should().Be(operation);
         }
 
         [Fact]
@@ -203,6 +237,65 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             // Validate the Label in the database
             var labelList = _applicationDatabaseContext.Labels.ToList();
             labelList.Count().Should().Be(databaseSizeBeforeUpdate);
+        }
+
+        [Fact]
+        public async Task UpdateLabelWithManyToManyAssociation()
+        {
+            // Due to JsonIgnore annotation on Operations property, we first create the Label
+            // This allow the operation to create the relationship
+            _applicationDatabaseContext.Labels.Add(_label);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            var updatedLabel = await _applicationDatabaseContext.Labels
+                .SingleOrDefaultAsync(it => it.Id == _label.Id);
+
+            // Create an Operation to test the ManyToMany association
+            var operation = new Operation {
+                Date = DateTime.UnixEpoch,
+                Description = "AAAAAAAAAA",
+                Amount = new decimal(1.0)
+            };
+            operation.Labels.Add(updatedLabel);
+            _applicationDatabaseContext.Operations.Add(operation);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            operation = await _applicationDatabaseContext.Operations
+                .SingleOrDefaultAsync(o => o.Id == operation.Id);
+
+            var databaseSizeBeforeUpdate = _applicationDatabaseContext.Labels.Count();
+
+            // Update the label
+            updatedLabel = await _applicationDatabaseContext.Labels
+                .SingleOrDefaultAsync(it => it.Id == _label.Id);
+            // Disconnect from session so that the updates on updatedLabel are not directly saved in db
+            //TODO detach
+            updatedLabel.Name = UpdatedName;
+
+            var response = await _client.PutAsync("/api/labels", TestUtil.ToJsonContent(updatedLabel));
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            updatedLabel = await _applicationDatabaseContext.Labels
+                .SingleOrDefaultAsync(it => it.Id == _label.Id);
+
+            // Create a second Operation to update the ManyToMany association
+            var secondOperation = new Operation {
+                Date = DateTime.Now,
+                Description = "BBBBBBBBBB",
+                Amount = new decimal(2.0)
+            };
+            secondOperation.Labels.Add(updatedLabel);
+            _applicationDatabaseContext.Operations.Add(secondOperation);
+            await _applicationDatabaseContext.SaveChangesAsync();
+            secondOperation = await _applicationDatabaseContext.Operations
+                .SingleOrDefaultAsync(o => o.Id == secondOperation.Id);
+
+            // Validate the Label in the database
+            var labelList = _applicationDatabaseContext.Labels
+                .Include("OperationLabels.Operation")
+                .ToList();
+            labelList.Count().Should().Be(databaseSizeBeforeUpdate);
+            updatedLabel = labelList[labelList.Count - 1];
+            updatedLabel.Name.Should().Be(UpdatedName);
+            updatedLabel.Operations[0].Should().Be(operation);
+            updatedLabel.Operations[1].Should().Be(secondOperation);                       
         }
     }
 }

@@ -54,7 +54,7 @@ namespace JHipsterNetSampleApplication.Controllers {
             _log.LogDebug($"REST request to update BankAccount : {bankAccount}");
             if (bankAccount.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
             //TODO catch //DbUpdateConcurrencyException into problem
-            _applicationDatabaseContext.Entry(bankAccount).State = EntityState.Modified;
+            _applicationDatabaseContext.Update(bankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
             return Ok(bankAccount)
                 .WithHeaders(HeaderUtil.CreateEntityUpdateAlert(EntityName, bankAccount.Id.ToString()));

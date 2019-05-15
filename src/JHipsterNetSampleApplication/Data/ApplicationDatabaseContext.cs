@@ -19,6 +19,7 @@ namespace JHipsterNetSampleApplication.Data {
         public DbSet<Operation> Operations { get; set; }
         public DbSet<Label> Labels { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<OperationLabel> OperationLabels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

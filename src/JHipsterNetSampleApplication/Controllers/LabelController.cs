@@ -54,7 +54,7 @@ namespace JHipsterNetSampleApplication.Controllers {
             _log.LogDebug($"REST request to update Label : {label}");
             if (label.Id == 0) throw new BadRequestAlertException("Invalid Id", EntityName, "idnull");
             //TODO catch //DbUpdateConcurrencyException into problem
-            _applicationDatabaseContext.Entry(label).State = EntityState.Modified;
+            _applicationDatabaseContext.Update(label);
             await _applicationDatabaseContext.SaveChangesAsync();
             return Ok(label)
                 .WithHeaders(HeaderUtil.CreateEntityUpdateAlert(EntityName, label.Id.ToString()));
