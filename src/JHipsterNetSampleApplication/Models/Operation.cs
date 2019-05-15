@@ -24,7 +24,6 @@ namespace JHipsterNetSampleApplication.Models {
         [Column("amount", TypeName = "decimal(10,2)")]
         public decimal Amount { get; set; }
 
-        //public int BankAccountId { get; set; }
         //        [JsonIgnore]
         public BankAccount BankAccount { get; set; }
 
