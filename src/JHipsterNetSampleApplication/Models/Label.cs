@@ -7,9 +7,7 @@ using Newtonsoft.Json;
 
 namespace JHipsterNetSampleApplication.Models {
     [Table("label")]
-    public class Label {
-        public Label() => Operations = new JoinListFacade<Operation, Label, OperationLabel>(this, OperationLabels);
-
+    public class Label {        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -22,12 +20,17 @@ namespace JHipsterNetSampleApplication.Models {
         [JsonProperty(PropertyName = "label")]
         public string Name { get; set; }
 
-        //        [JsonIgnore]
-        private IList<OperationLabel> OperationLabels { get; } = new List<OperationLabel>();
+        [JsonIgnore]
+        public IList<OperationLabel> OperationLabels { get; } = new List<OperationLabel>();
 
         [NotMapped]
         [JsonIgnore]
         public IList<Operation> Operations { get; }
+
+        public Label()
+        {
+            Operations = new JoinListFacade<Operation, Label, OperationLabel>(this, OperationLabels);
+        }
 
         public override bool Equals(object obj)
         {

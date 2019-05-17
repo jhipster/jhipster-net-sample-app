@@ -47,14 +47,6 @@ namespace JHipsterNetSampleApplication.Data {
 
             builder.Entity<OperationLabel>()
                 .HasKey(t => new { t.OperationId, t.LabelId });
-
-            builder.Entity<OperationLabel>()
-                .HasOne(pt => pt.Operation)
-                .WithMany("OperationLabels");
-
-            builder.Entity<OperationLabel>()
-                .HasOne(pt => pt.Label)
-                .WithMany("OperationLabels");
         }
     }
 }

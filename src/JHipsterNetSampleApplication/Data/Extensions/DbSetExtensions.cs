@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Serilog;
 
 namespace JHipsterNetSampleApplication.Data.Extensions {
     public static class DbSetExtensions {
@@ -39,23 +40,28 @@ namespace JHipsterNetSampleApplication.Data.Extensions {
             where TEntity : class
             where TOwnerEntity : class
         {
-            bool success;
-            var receiverObjects = receiver.ApplyWhere(ownerEntity.GetType().Name + "Id", id, out success);
+            try {
+                var receiverObjects = receiver.ApplyWhere(ownerEntity.GetType().Name + "Id", id);
 
-            if (success) {
                 foreach (TEntity receiverObject in receiverObjects) {
                     receiver.Remove(receiverObject);
                 }
-            }            
+            }
+            catch (Exception ex) {
+                Log.Error(ex, $"Error when trying to remove navigation property. The deletion was not performed");
+            }
         }
 
-        private static IQueryable<T> ApplyWhere<T>(this IQueryable<T> source, string propertyName, object propertyValue, out bool success)
+        private static IQueryable<T> ApplyWhere<T>(this IQueryable<T> source, string propertyName, object propertyValue)
             where T : class
         {
             // 1. Retrieve member access expression
-            success = false;
             var mba = PropertyAccessorCache<T>.Get(propertyName);
-            if (mba == null) return source;
+            if (mba == null) {
+                var ex = new NullReferenceException();
+                Log.Error(ex, $"Error when trying to get the property, it doesn't exist");
+                throw ex;
+            }
 
             // 2. Try converting value to correct type
             object value;
@@ -67,7 +73,8 @@ namespace JHipsterNetSampleApplication.Data.Extensions {
                 ex is FormatException ||
                 ex is OverflowException ||
                 ex is ArgumentNullException) {
-                return source;
+                Log.Error(ex, $"Error when trying to convert type of property value with type of property");
+                throw;
             }
 
             // 3. Construct expression tree
@@ -77,7 +84,6 @@ namespace JHipsterNetSampleApplication.Data.Extensions {
             var expression = Expression.Lambda(eqe, mba.Parameters[0]);
 
             // 4. Construct new query
-            success = true;
             MethodCallExpression resultExpression = Expression.Call(
                 null,
                 GetMethodInfo(Queryable.Where, source, (Expression<Func<T, bool>>)null),
@@ -85,10 +91,7 @@ namespace JHipsterNetSampleApplication.Data.Extensions {
             return source.Provider.CreateQuery<T>(resultExpression);
         }
 
-        private static MethodInfo GetMethodInfo<T1, T2, T3>(
-            Func<T1, T2, T3> f,
-            T1 unused1,
-            T2 unused2)
+        private static MethodInfo GetMethodInfo<T1, T2, T3>(Func<T1, T2, T3> f, T1 unused1, T2 unused2)
         {
             return f.Method;
         }

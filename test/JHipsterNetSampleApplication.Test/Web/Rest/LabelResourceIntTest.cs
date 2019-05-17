@@ -97,34 +97,48 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         [Fact]
         public async Task CreateLabelWithManyToManyAssociation()
         {
-            // Due to JsonIgnore annotation on Operations property, we first create the Label
-            // This allows the operation to create the relationship
             var databaseSizeBeforeCreate = _applicationDatabaseContext.Labels.Count();
 
-            // Create the Label
+            /* Due to JsonIgnore annotation on Operations property, we first create the Label
+               This allows the operation to create the relationship */
             var response = await _client.PostAsync("/api/labels", TestUtil.ToJsonContent(_label));
             response.StatusCode.Should().Be(HttpStatusCode.Created);
-            var testLabel = _applicationDatabaseContext.Labels.ToList()[0];
+            var label = _applicationDatabaseContext.Labels.ToList()[0];
 
             // Create an Operation to test the ManyToMany association
             var operation = new Operation {
-                Date = DateTime.UnixEpoch,
-                Description = "AAAAAAAAAA",
-                Amount = new decimal(1.0)
+                Date = DateTime.Now,
+                Description = "BBBBBBBBBB",
+                Amount = new decimal(2.0)
             };
-            operation.Labels.Add(testLabel);
+            operation.Labels.Add(label);
             _applicationDatabaseContext.Operations.Add(operation);
             await _applicationDatabaseContext.SaveChangesAsync();
-            operation = _applicationDatabaseContext.Operations.ToList()[0];
 
             // Validate the Label in the database
+            /* AsNoTracking() permits to avoid the use of the cache and force to fetch data from the database.
+               It is needed because another context makes the update and our context doesn't have the knowlegde of
+               data changes and without it our context will fetch from its cache omitting the changes done. */
             var labelList = _applicationDatabaseContext.Labels
-                .Include("OperationLabels.Operation")
+                .Include(l => l.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Operation)
+                .AsNoTracking()
                 .ToList();
             labelList.Count().Should().Be(databaseSizeBeforeCreate + 1);
-            testLabel = labelList[labelList.Count - 1];
+            var testLabel = labelList[labelList.Count - 1];
             testLabel.Name.Should().Be(DefaultName);
             testLabel.Operations[0].Should().Be(operation);
+
+            // Validate the Operation in the database and in particular the Label referenced
+            var testOperation = await _applicationDatabaseContext.Operations
+                .Include(o => o.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Label)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(o => o.Id == 1);
+            testOperation.Date.Should().Be(operation.Date);
+            testOperation.Description.Should().Be(operation.Description);
+            testOperation.Amount.Should().Be(operation.Amount);
+            testOperation.Labels[0].Should().Be(testLabel);
         }
 
         [Fact]
@@ -246,8 +260,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             // This allow the operation to create the relationship
             _applicationDatabaseContext.Labels.Add(_label);
             await _applicationDatabaseContext.SaveChangesAsync();
-            var updatedLabel = await _applicationDatabaseContext.Labels
-                .SingleOrDefaultAsync(it => it.Id == _label.Id);
 
             // Create an Operation to test the ManyToMany association
             var operation = new Operation {
@@ -255,16 +267,14 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                 Description = "AAAAAAAAAA",
                 Amount = new decimal(1.0)
             };
-            operation.Labels.Add(updatedLabel);
+            operation.Labels.Add(_label);
             _applicationDatabaseContext.Operations.Add(operation);
             await _applicationDatabaseContext.SaveChangesAsync();
-            operation = await _applicationDatabaseContext.Operations
-                .SingleOrDefaultAsync(o => o.Id == operation.Id);
 
             var databaseSizeBeforeUpdate = _applicationDatabaseContext.Labels.Count();
 
             // Update the label
-            updatedLabel = await _applicationDatabaseContext.Labels
+            var updatedLabel = await _applicationDatabaseContext.Labels
                 .SingleOrDefaultAsync(it => it.Id == _label.Id);
             // Disconnect from session so that the updates on updatedLabel are not directly saved in db
             //TODO detach
@@ -272,30 +282,50 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             var response = await _client.PutAsync("/api/labels", TestUtil.ToJsonContent(updatedLabel));
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            updatedLabel = await _applicationDatabaseContext.Labels
-                .SingleOrDefaultAsync(it => it.Id == _label.Id);
 
             // Create a second Operation to update the ManyToMany association
-            var secondOperation = new Operation {
+            var updatedOperation = new Operation {
                 Date = DateTime.Now,
                 Description = "BBBBBBBBBB",
                 Amount = new decimal(2.0)
             };
-            secondOperation.Labels.Add(updatedLabel);
-            _applicationDatabaseContext.Operations.Add(secondOperation);
+            updatedOperation.Labels.Add(updatedLabel);
+            _applicationDatabaseContext.Operations.Add(updatedOperation);
             await _applicationDatabaseContext.SaveChangesAsync();
-            secondOperation = await _applicationDatabaseContext.Operations
-                .SingleOrDefaultAsync(o => o.Id == secondOperation.Id);
 
             // Validate the Label in the database
             var labelList = _applicationDatabaseContext.Labels
-                .Include("OperationLabels.Operation")
+                .Include(label => label.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Operation)
+                .AsNoTracking()
                 .ToList();
             labelList.Count().Should().Be(databaseSizeBeforeUpdate);
-            updatedLabel = labelList[labelList.Count - 1];
-            updatedLabel.Name.Should().Be(UpdatedName);
-            updatedLabel.Operations[0].Should().Be(operation);
-            updatedLabel.Operations[1].Should().Be(secondOperation);                       
+            var testUpdatedLabel = labelList[labelList.Count - 1];
+            testUpdatedLabel.Name.Should().Be(UpdatedName);
+            testUpdatedLabel.Operations[0].Should().Be(operation);
+            testUpdatedLabel.Operations[1].Should().Be(updatedOperation);
+
+            // Validate the updatedOperation in the database and in particular the Label referenced
+            var testUpdatedOperation = await _applicationDatabaseContext.Operations
+                .Include(o => o.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Label)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(o => o.Id == updatedOperation.Id);
+            testUpdatedOperation.Date.Should().Be(updatedOperation.Date);
+            testUpdatedOperation.Description.Should().Be(updatedOperation.Description);
+            testUpdatedOperation.Amount.Should().Be(updatedOperation.Amount);
+            testUpdatedOperation.Labels[0].Should().Be(testUpdatedLabel);
+
+            // Validate the operation in the database and in particular the Label referenced
+            var testOperation = await _applicationDatabaseContext.Operations
+                .Include(o => o.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Label)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(o => o.Id == operation.Id);
+            testOperation.Date.Should().Be(operation.Date);
+            testOperation.Description.Should().Be(operation.Description);
+            testOperation.Amount.Should().Be(operation.Amount);
+            testOperation.Labels[0].Should().Be(testUpdatedLabel);
         }
     }
 }

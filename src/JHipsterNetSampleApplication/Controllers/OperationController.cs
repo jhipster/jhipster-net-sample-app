@@ -78,7 +78,8 @@ namespace JHipsterNetSampleApplication.Controllers {
             var result = await _applicationDatabaseContext.Operations
                 .Include(operation => operation.BankAccount)
                     .ThenInclude(bankAccount => bankAccount.User)
-                .Include("OperationLabels.Label")
+                .Include(operation => operation.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Label)
                 .SingleOrDefaultAsync(operation => operation.Id == id);
             return ActionResultUtil.WrapOrNotFound(result);
         }

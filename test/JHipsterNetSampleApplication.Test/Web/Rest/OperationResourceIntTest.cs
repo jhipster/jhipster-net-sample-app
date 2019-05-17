@@ -99,7 +99,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             };
             _applicationDatabaseContext.BankAccounts.Add(bankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
-            bankAccount = _applicationDatabaseContext.BankAccounts.ToList()[0];
 
             var databaseSizeBeforeCreate = _applicationDatabaseContext.Operations.Count();
 
@@ -111,7 +110,13 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             response.StatusCode.Should().Be(HttpStatusCode.Created);
 
             // Validate the Operation in the database
-            var operationList = _applicationDatabaseContext.Operations.ToList();
+            /* AsNoTracking() permits to avoid the use of the cache and force to fetch data from the database.
+               It is needed because another context makes the update and our context doesn't have the knowlegde of
+               data changes and without it our context will fetch from its cache omitting the changes done. */
+            var operationList = _applicationDatabaseContext.Operations
+                .Include(operation => operation.BankAccount)
+                .AsNoTracking()
+                .ToList();
             operationList.Count().Should().Be(databaseSizeBeforeCreate + 1);
             var testOperation = operationList[operationList.Count - 1];
             testOperation.Date.Should().Be(DefaultDate);
@@ -129,7 +134,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             };
             _applicationDatabaseContext.Labels.Add(label);
             await _applicationDatabaseContext.SaveChangesAsync();
-            label = _applicationDatabaseContext.Labels.ToList()[0];
 
             var databaseSizeBeforeCreate = _applicationDatabaseContext.Operations.Count();
 
@@ -142,7 +146,9 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             // Validate the Operation in the database
             var operationList = _applicationDatabaseContext.Operations
-                .Include("OperationLabels.Label")
+                .Include(operation => operation.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Label)
+                .AsNoTracking()
                 .ToList();
             operationList.Count().Should().Be(databaseSizeBeforeCreate + 1);
             var testOperation = operationList[operationList.Count - 1];
@@ -150,6 +156,15 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             testOperation.Description.Should().Be(DefaultDescription);
             testOperation.Amount.Should().Be(DefaultAmount);
             testOperation.Labels[0].Should().Be(label);
+
+            // Validate the Label in the database and in particular the Operation referenced            
+            var testLabel = await _applicationDatabaseContext.Labels
+                .Include(l => l.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Operation)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id == 1);
+            testLabel.Name.Should().Be(label.Name);
+            testLabel.Operations[0].Should().Be(testOperation);
         }
 
         [Fact]
@@ -288,10 +303,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             _applicationDatabaseContext.BankAccounts.Add(bankAccount);
             _applicationDatabaseContext.BankAccounts.Add(updatedBankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
-            bankAccount = await _applicationDatabaseContext.BankAccounts
-                .SingleOrDefaultAsync(bA => bA.Id == 1);
-            updatedBankAccount = await _applicationDatabaseContext.BankAccounts
-                .SingleOrDefaultAsync(bA => bA.Id == 2);
 
             // Set the referencing field
             _operation.BankAccount = bankAccount;
@@ -316,7 +327,10 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // Validate the Operation in the database
-            var operationList = _applicationDatabaseContext.Operations.ToList();
+            var operationList = _applicationDatabaseContext.Operations
+                .Include(operation => operation.BankAccount)
+                .AsNoTracking()
+                .ToList();
             operationList.Count().Should().Be(databaseSizeBeforeUpdate);
             var testOperation = operationList[operationList.Count - 1];
             testOperation.Date.Should().Be(UpdatedDate);
@@ -338,10 +352,6 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             _applicationDatabaseContext.Labels.Add(label);
             _applicationDatabaseContext.Labels.Add(updatedLabel);
             await _applicationDatabaseContext.SaveChangesAsync();
-            label = await _applicationDatabaseContext.Labels
-                .SingleOrDefaultAsync(l => l.Id == 1);
-            updatedLabel = await _applicationDatabaseContext.Labels
-                .SingleOrDefaultAsync(l => l.Id == 2);
 
             // Set the referencing field
             _operation.Labels.Add(label);
@@ -368,7 +378,9 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
 
             // Validate the Operation in the database
             var operationList = _applicationDatabaseContext.Operations
-                .Include("OperationLabels.Label")
+                .Include(operation => operation.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Label)
+                .AsNoTracking()
                 .ToList();
             operationList.Count().Should().Be(databaseSizeBeforeUpdate);
             var testOperation = operationList[operationList.Count - 1];
@@ -376,6 +388,24 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             testOperation.Description.Should().Be(UpdatedDescription);
             testOperation.Amount.Should().Be(UpdatedAmount);
             testOperation.Labels[0].Should().Be(updatedLabel);
+
+            // Validate the updatedLabel in the database and in particular the Operation referenced
+            var testUpdatedLabel = await _applicationDatabaseContext.Labels
+                .Include(l => l.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Operation)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id == 2);
+            testUpdatedLabel.Name.Should().Be(updatedLabel.Name);
+            testUpdatedLabel.Operations[0].Should().Be(testOperation);
+
+            // Validate the label in the database and in particular there is no more Operation referenced
+            var testLabel = await _applicationDatabaseContext.Labels
+                .Include(l => l.OperationLabels)
+                    .ThenInclude(operationLabel => operationLabel.Operation)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id == 1);
+            testLabel.Name.Should().Be(label.Name);
+            testLabel.Operations.Should().BeEmpty();
         }
     }
 }
