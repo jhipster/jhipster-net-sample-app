@@ -216,7 +216,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedBankAccount =
                 await _applicationDatabaseContext.BankAccounts.SingleOrDefaultAsync(it => it.Id == _bankAccount.Id);
             // Disconnect from session so that the updates on updatedBankAccount are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedBankAccount.Name = UpdatedName;
             updatedBankAccount.Balance = UpdatedBalance;
 
@@ -251,7 +251,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedBankAccount = await _applicationDatabaseContext.BankAccounts
                 .SingleOrDefaultAsync(it => it.Id == _bankAccount.Id);
             // Disconnect from session so that the updates on updatedBankAccount are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedBankAccount.Name = UpdatedName;
             updatedBankAccount.Balance = UpdatedBalance;
             updatedBankAccount.User = updatedUser;

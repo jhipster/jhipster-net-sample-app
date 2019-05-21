@@ -357,7 +357,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedOperation =
                 await _applicationDatabaseContext.Operations.SingleOrDefaultAsync(it => it.Id == _operation.Id);
             // Disconnect from session so that the updates on updatedOperation are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedOperation.Date = UpdatedDate;
             updatedOperation.Description = UpdatedDescription;
             updatedOperation.Amount = UpdatedAmount;
@@ -403,7 +403,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedOperation = await _applicationDatabaseContext.Operations
                 .SingleOrDefaultAsync(it => it.Id == _operation.Id);
             // Disconnect from session so that the updates on updatedOperation are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedOperation.Date = UpdatedDate;
             updatedOperation.Description = UpdatedDescription;
             updatedOperation.Amount = UpdatedAmount;
@@ -470,7 +470,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var updatedOperation = await _applicationDatabaseContext.Operations
                 .SingleOrDefaultAsync(it => it.Id == _operation.Id);
             // Disconnect from session so that the updates on updatedOperation are not directly saved in db
-            //TODO detach
+//TODO detach
             updatedOperation.Date = UpdatedDate;
             updatedOperation.Description = UpdatedDescription;
             updatedOperation.Amount = UpdatedAmount;
