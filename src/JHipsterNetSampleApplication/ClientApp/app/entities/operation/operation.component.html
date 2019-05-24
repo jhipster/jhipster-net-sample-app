@@ -1,9 +1,9 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="JhipsterNetSampleApplicationApp.operation.home.title">Operations</span>
+        <span jhiTranslate="jhipsterSampleApplicationApp.operation.home.title">Operations</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-operation" [routerLink]="['/operation/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="JhipsterNetSampleApplicationApp.operation.home.createLabel">
+            <span  jhiTranslate="jhipsterSampleApplicationApp.operation.home.createLabel">
             Create new Operation
             </span>
         </button>
@@ -15,10 +15,10 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="date"><span jhiTranslate="JhipsterNetSampleApplicationApp.operation.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="description"><span jhiTranslate="JhipsterNetSampleApplicationApp.operation.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="amount"><span jhiTranslate="JhipsterNetSampleApplicationApp.operation.amount">Amount</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="bankAccount.name"><span jhiTranslate="JhipsterNetSampleApplicationApp.operation.bankAccount">Bank Account</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="date"><span jhiTranslate="jhipsterSampleApplicationApp.operation.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="jhipsterSampleApplicationApp.operation.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="amount"><span jhiTranslate="jhipsterSampleApplicationApp.operation.amount">Amount</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="bankAccount.name"><span jhiTranslate="jhipsterSampleApplicationApp.operation.bankAccount">Bank Account</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -34,7 +34,7 @@
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
                                 [routerLink]="['/operation', operation.id, 'view' ]"
                                 class="btn btn-info btn-sm">

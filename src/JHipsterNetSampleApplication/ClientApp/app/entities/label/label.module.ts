@@ -3,32 +3,32 @@ import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
-import { JhipsterNetSampleApplicationSharedModule } from 'app/shared';
+import { JhipsterSampleApplicationSharedModule } from 'app/shared';
 import {
-    LabelComponent,
-    LabelDetailComponent,
-    LabelUpdateComponent,
-    LabelDeletePopupComponent,
-    LabelDeleteDialogComponent,
-    labelRoute,
-    labelPopupRoute
+  LabelComponent,
+  LabelDetailComponent,
+  LabelUpdateComponent,
+  LabelDeletePopupComponent,
+  LabelDeleteDialogComponent,
+  labelRoute,
+  labelPopupRoute
 } from './';
 
 const ENTITY_STATES = [...labelRoute, ...labelPopupRoute];
 
 @NgModule({
-    imports: [JhipsterNetSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [LabelComponent, LabelDetailComponent, LabelUpdateComponent, LabelDeleteDialogComponent, LabelDeletePopupComponent],
-    entryComponents: [LabelComponent, LabelUpdateComponent, LabelDeleteDialogComponent, LabelDeletePopupComponent],
-    providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhipsterSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [LabelComponent, LabelDetailComponent, LabelUpdateComponent, LabelDeleteDialogComponent, LabelDeletePopupComponent],
+  entryComponents: [LabelComponent, LabelUpdateComponent, LabelDeleteDialogComponent, LabelDeletePopupComponent],
+  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class JhipsterNetSampleApplicationLabelModule {
-    constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-        this.languageHelper.language.subscribe((languageKey: string) => {
-            if (languageKey !== undefined) {
-                this.languageService.changeLanguage(languageKey);
-            }
-        });
-    }
+export class JhipsterSampleApplicationLabelModule {
+  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+    this.languageHelper.language.subscribe((languageKey: string) => {
+      if (languageKey !== undefined) {
+        this.languageService.changeLanguage(languageKey);
+      }
+    });
+  }
 }

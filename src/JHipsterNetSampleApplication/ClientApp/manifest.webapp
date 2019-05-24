@@ -1,6 +1,6 @@
 {
-  "name": "JhipsterNetSampleApplication",
-  "short_name": "JhipsterNetSampleApplication",
+  "name": "JhipsterSampleApplication",
+  "short_name": "JhipsterSampleApplication",
   "icons": [
       {
           "src": "./content/images/jhipster_family_member_1_head-192.png",
@@ -25,7 +25,7 @@
   ],
   "theme_color": "#000000",
   "background_color": "#e0e0e0",
-  "start_url": "/index.html",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait"
 }

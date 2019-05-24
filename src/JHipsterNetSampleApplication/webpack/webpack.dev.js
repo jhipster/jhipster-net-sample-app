@@ -7,6 +7,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const path = require('path');
+const sass = require('sass');
 
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
@@ -39,7 +40,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     },
     entry: {
         polyfills: './ClientApp/app/polyfills',
-        global: './ClientApp/content/css/global.css',
+        global: './ClientApp/content/scss/global.scss',
         main: './ClientApp/app/app.main'
     },
     output: {
@@ -83,13 +84,19 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             exclude: /(node_modules)/
         },
         {
-            test: /\.css$/,
-            use: ['to-string-loader', 'css-loader'],
-            exclude: /(vendor\.css|global\.css)/
+            test: /\.scss$/,
+            use: ['to-string-loader', 'css-loader', {
+                loader: 'sass-loader',
+                options: { implementation: sass }
+            }],
+            exclude: /(vendor\.scss|global\.scss)/
         },
         {
-            test: /(vendor\.css|global\.css)/,
-            use: ['style-loader', 'css-loader']
+            test: /(vendor\.scss|global\.scss)/,
+            use: ['style-loader', 'css-loader', {
+                loader: 'sass-loader',
+                options: { implementation: sass }
+            }]
         }]
     },
     stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
