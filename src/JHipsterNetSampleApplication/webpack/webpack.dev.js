@@ -36,7 +36,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         stats: options.stats,
         watchOptions: {
             ignored: /node_modules/
-        }
+        },
+        https: options.tls
     },
     entry: {
         polyfills: './ClientApp/app/polyfills',
@@ -93,7 +94,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         },
         {
             test: /(vendor\.scss|global\.scss)/,
-            use: ['style-loader', 'css-loader', {
+            use: ['style-loader', 'css-loader', 'postcss-loader', {
                 loader: 'sass-loader',
                 options: { implementation: sass }
             }]
@@ -109,10 +110,14 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         new FriendlyErrorsWebpackPlugin(),
         new ForkTsCheckerWebpackPlugin(),
         new BrowserSyncPlugin({
+            https: options.tls,
             host: 'localhost',
             port: 9000,
             proxy: {
-                target: 'http://localhost:9060'
+                target: `http${options.tls ? 's' : ''}://localhost:9060`,
+                proxyOptions: {
+                    changeOrigin: false  //pass the Host header to the backend unchanged  https://github.com/Browsersync/browser-sync/issues/430
+                }
             },
             socket: {
                 clients: {

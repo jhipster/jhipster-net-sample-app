@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
-import { JhipsterSampleApplicationSharedModule } from 'app/shared';
+import { JhipsterNetSampleApplicationSharedModule } from 'app/shared';
 import {
   BankAccountComponent,
   BankAccountDetailComponent,
@@ -17,7 +17,7 @@ import {
 const ENTITY_STATES = [...bankAccountRoute, ...bankAccountPopupRoute];
 
 @NgModule({
-  imports: [JhipsterSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [JhipsterNetSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
   declarations: [
     BankAccountComponent,
     BankAccountDetailComponent,
@@ -29,7 +29,7 @@ const ENTITY_STATES = [...bankAccountRoute, ...bankAccountPopupRoute];
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class JhipsterSampleApplicationBankAccountModule {
+export class JhipsterNetSampleApplicationBankAccountModule {
   constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
     this.languageHelper.language.subscribe((languageKey: string) => {
       if (languageKey !== undefined) {

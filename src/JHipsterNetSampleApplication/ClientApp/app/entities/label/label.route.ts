@@ -34,7 +34,7 @@ export const labelRoute: Routes = [
     component: LabelComponent,
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.label.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.label.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -46,7 +46,7 @@ export const labelRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.label.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.label.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -58,7 +58,7 @@ export const labelRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.label.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.label.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -70,7 +70,7 @@ export const labelRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.label.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.label.home.title'
     },
     canActivate: [UserRouteAccessService]
   }
@@ -85,7 +85,7 @@ export const labelPopupRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.label.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.label.home.title'
     },
     canActivate: [UserRouteAccessService],
     outlet: 'popup'

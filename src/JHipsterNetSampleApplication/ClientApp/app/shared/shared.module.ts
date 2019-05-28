@@ -1,22 +1,22 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
-  JhipsterSampleApplicationSharedLibsModule,
-  JhipsterSampleApplicationSharedCommonModule,
+    JhipsterNetSampleApplicationSharedLibsModule,
+    JhipsterNetSampleApplicationSharedCommonModule,
   JhiLoginModalComponent,
   HasAnyAuthorityDirective
 } from './';
 
 @NgModule({
-  imports: [JhipsterSampleApplicationSharedLibsModule, JhipsterSampleApplicationSharedCommonModule],
+    imports: [JhipsterNetSampleApplicationSharedLibsModule, JhipsterNetSampleApplicationSharedCommonModule],
   declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective],
   entryComponents: [JhiLoginModalComponent],
-  exports: [JhipsterSampleApplicationSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
+    exports: [JhipsterNetSampleApplicationSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class JhipsterSampleApplicationSharedModule {
+export class JhipsterNetSampleApplicationSharedModule {
   static forRoot() {
     return {
-      ngModule: JhipsterSampleApplicationSharedModule
+        ngModule: JhipsterNetSampleApplicationSharedModule
     };
   }
 }

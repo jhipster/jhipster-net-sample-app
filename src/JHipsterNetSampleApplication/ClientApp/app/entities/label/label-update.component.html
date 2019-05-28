@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-label-heading" jhiTranslate="jhipsterSampleApplicationApp.label.home.createOrEditLabel">Create or edit a Label</h2>
+            <h2 id="jhi-label-heading" jhiTranslate="JhipsterNetSampleApplicationApp.label.home.createOrEditLabel">Create or edit a Label</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!label.id">
@@ -10,7 +10,7 @@
                         readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="jhipsterSampleApplicationApp.label.label" for="field_label">Label</label>
+                    <label class="form-control-label" jhiTranslate="JhipsterNetSampleApplicationApp.label.label" for="field_label">Label</label>
                     <input type="text" class="form-control" name="label" id="field_label"
                            formControlName="label"/>
                     <div *ngIf="editForm.get('label').invalid && (editForm.get('label').dirty || editForm.get('label').touched)">

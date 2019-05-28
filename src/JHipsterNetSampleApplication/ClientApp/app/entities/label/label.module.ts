@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
 
-import { JhipsterSampleApplicationSharedModule } from 'app/shared';
+import { JhipsterNetSampleApplicationSharedModule } from 'app/shared';
 import {
   LabelComponent,
   LabelDetailComponent,
@@ -17,13 +17,13 @@ import {
 const ENTITY_STATES = [...labelRoute, ...labelPopupRoute];
 
 @NgModule({
-  imports: [JhipsterSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [JhipsterNetSampleApplicationSharedModule, RouterModule.forChild(ENTITY_STATES)],
   declarations: [LabelComponent, LabelDetailComponent, LabelUpdateComponent, LabelDeleteDialogComponent, LabelDeletePopupComponent],
   entryComponents: [LabelComponent, LabelUpdateComponent, LabelDeleteDialogComponent, LabelDeletePopupComponent],
   providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class JhipsterSampleApplicationLabelModule {
+export class JhipsterNetSampleApplicationLabelModule {
   constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
     this.languageHelper.language.subscribe((languageKey: string) => {
       if (languageKey !== undefined) {

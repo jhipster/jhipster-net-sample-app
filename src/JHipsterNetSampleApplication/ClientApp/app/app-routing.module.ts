@@ -11,7 +11,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
       [
         {
           path: 'admin',
-          loadChildren: './admin/admin.module#JhipsterSampleApplicationAdminModule'
+          loadChildren: './admin/admin.module#JhipsterNetSampleApplicationAdminModule'
         },
         ...LAYOUT_ROUTES
       ],
@@ -20,4 +20,4 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
   ],
   exports: [RouterModule]
 })
-export class JhipsterSampleApplicationAppRoutingModule {}
+export class JhipsterNetSampleApplicationAppRoutingModule {}

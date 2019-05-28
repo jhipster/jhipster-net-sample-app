@@ -34,7 +34,7 @@ export const operationRoute: Routes = [
     component: OperationComponent,
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.operation.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.operation.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -46,7 +46,7 @@ export const operationRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.operation.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.operation.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -58,7 +58,7 @@ export const operationRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.operation.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.operation.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -70,7 +70,7 @@ export const operationRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.operation.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.operation.home.title'
     },
     canActivate: [UserRouteAccessService]
   }
@@ -85,7 +85,7 @@ export const operationPopupRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.operation.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.operation.home.title'
     },
     canActivate: [UserRouteAccessService],
     outlet: 'popup'

@@ -1,96 +1,96 @@
 {
-  "global": {
-    "title": "JhipsterSampleApplication",
-    "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
-    "menu": {
-      "home": "Home",
-      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-      "entities": {
-        "main": "Entities",
-        "bankAccount": "Bank Account",
-        "label": "Label",
-        "operation": "Operation",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
-      },
-      "account": {
-        "main": "Account",
-        "settings": "Settings",
-        "password": "Password",
-        "sessions": "Sessions",
-        "login": "Sign in",
-        "logout": "Sign out",
-        "register": "Register"
-      },
-      "admin": {
-        "main": "Administration",
-        "userManagement": "User management",
-        "tracker": "User tracker",
-        "metrics": "Metrics",
-        "health": "Health",
-        "configuration": "Configuration",
-        "logs": "Logs",
-        "audits": "Audits",
-        "apidocs": "API",
-        "database": "Database",
-        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
-      },
-      "language": "Language"
-    },
-    "form": {
-      "username.label": "Username",
-      "username.placeholder": "Your username",
-      "currentpassword.label": "Current password",
-      "currentpassword.placeholder": "Current password",
-      "newpassword.label": "New password",
-      "newpassword.placeholder": "New password",
-      "confirmpassword.label": "New password confirmation",
-      "confirmpassword.placeholder": "Confirm the new password",
-      "email.label": "Email",
-      "email.placeholder": "Your email"
-    },
-    "messages": {
-      "info": {
-        "authenticated": {
-          "prefix": "If you want to ",
-          "link": "sign in",
-          "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
+    "global": {
+        "title": "JhipsterNetSampleApplication",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "menu": {
+            "home": "Home",
+            "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+            "entities": {
+                "main": "Entities",
+                "bankAccount": "Bank Account",
+                "label": "Label",
+                "operation": "Operation",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
+            "account": {
+                "main": "Account",
+                "settings": "Settings",
+                "password": "Password",
+                "sessions": "Sessions",
+                "login": "Sign in",
+                "logout": "Sign out",
+                "register": "Register"
+            },
+            "admin": {
+                "main": "Administration",
+                "userManagement": "User management",
+                "tracker": "User tracker",
+                "metrics": "Metrics",
+                "health": "Health",
+                "configuration": "Configuration",
+                "logs": "Logs",
+                "audits": "Audits",
+                "apidocs": "API",
+                "database": "Database",
+                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+            },
+            "language": "Language"
         },
-        "register": {
-          "noaccount": "You don't have an account yet?",
-          "link": "Register a new account"
-        }
-      },
-      "error": {
-        "dontmatch": "The password and its confirmation do not match!"
-      },
-      "validate": {
-        "newpassword": {
-          "required": "Your password is required.",
-          "minlength": "Your password is required to be at least 4 characters.",
-          "maxlength": "Your password cannot be longer than 50 characters.",
-          "strength": "Password strength:"
+        "form": {
+            "username.label": "Username",
+            "username.placeholder": "Your username",
+            "currentpassword.label": "Current password",
+            "currentpassword.placeholder": "Current password",
+            "newpassword.label": "New password",
+            "newpassword.placeholder": "New password",
+            "confirmpassword.label": "New password confirmation",
+            "confirmpassword.placeholder": "Confirm the new password",
+            "email.label": "Email",
+            "email.placeholder": "Your email"
         },
-        "confirmpassword": {
-          "required": "Your confirmation password is required.",
-          "minlength": "Your confirmation password is required to be at least 4 characters.",
-          "maxlength": "Your confirmation password cannot be longer than 50 characters."
+        "messages": {
+            "info": {
+                "authenticated": {
+                    "prefix": "If you want to ",
+                    "link": "sign in",
+                    "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
+                },
+                "register": {
+                    "noaccount": "You don't have an account yet?",
+                    "link": "Register a new account"
+                }
+            },
+            "error": {
+                "dontmatch": "The password and its confirmation do not match!"
+            },
+            "validate": {
+                "newpassword": {
+                    "required": "Your password is required.",
+                    "minlength": "Your password is required to be at least 4 characters.",
+                    "maxlength": "Your password cannot be longer than 50 characters.",
+                    "strength": "Password strength:"
+                },
+                "confirmpassword": {
+                    "required": "Your confirmation password is required.",
+                    "minlength": "Your confirmation password is required to be at least 4 characters.",
+                    "maxlength": "Your confirmation password cannot be longer than 50 characters."
+                },
+                "email": {
+                    "required": "Your email is required.",
+                    "invalid": "Your email is invalid.",
+                    "minlength": "Your email is required to be at least 5 characters.",
+                    "maxlength": "Your email cannot be longer than 50 characters."
+                }
+            }
         },
-        "email": {
-          "required": "Your email is required.",
-          "invalid": "Your email is invalid.",
-          "minlength": "Your email is required to be at least 5 characters.",
-          "maxlength": "Your email cannot be longer than 50 characters."
-        }
-      }
+        "field": {
+            "id": "ID"
+        },
+        "ribbon": {
+            "dev": "Development"
+        },
+        "item-count": "Showing {{first}} - {{second}} of {{total}} items."
     },
-    "field": {
-      "id": "ID"
-    },
-    "ribbon": {
-      "dev": "Development"
-    },
-    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
-  },
   "entity": {
     "action": {
       "addblob": "Add blob",

@@ -34,7 +34,7 @@ export const bankAccountRoute: Routes = [
     component: BankAccountComponent,
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.bankAccount.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.bankAccount.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -46,7 +46,7 @@ export const bankAccountRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.bankAccount.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.bankAccount.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -58,7 +58,7 @@ export const bankAccountRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.bankAccount.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.bankAccount.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -70,7 +70,7 @@ export const bankAccountRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.bankAccount.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.bankAccount.home.title'
     },
     canActivate: [UserRouteAccessService]
   }
@@ -85,7 +85,7 @@ export const bankAccountPopupRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'jhipsterSampleApplicationApp.bankAccount.home.title'
+        pageTitle: 'JhipsterNetSampleApplicationApp.bankAccount.home.title'
     },
     canActivate: [UserRouteAccessService],
     outlet: 'popup'

@@ -31,7 +31,7 @@ module.exports = (options) => ({
                     minifyJS:false,
                     minifyCSS:false
                 },
-                exclude: /(ClientApp\/app\/index.html)/
+                exclude: /(ClientApp\/index.html)/
             },
             {
                 test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,

@@ -11,12 +11,12 @@ import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { JhipsterSampleApplicationSharedModule } from 'app/shared';
-import { JhipsterSampleApplicationCoreModule } from 'app/core';
-import { JhipsterSampleApplicationAppRoutingModule } from './app-routing.module';
-import { JhipsterSampleApplicationHomeModule } from './home/home.module';
-import { JhipsterSampleApplicationAccountModule } from './account/account.module';
-import { JhipsterSampleApplicationEntityModule } from './entities/entity.module';
+import { JhipsterNetSampleApplicationSharedModule } from 'app/shared';
+import { JhipsterNetSampleApplicationCoreModule } from 'app/core';
+import { JhipsterNetSampleApplicationAppRoutingModule } from './app-routing.module';
+import { JhipsterNetSampleApplicationHomeModule } from './home/home.module';
+import { JhipsterNetSampleApplicationAccountModule } from './account/account.module';
+import { JhipsterNetSampleApplicationEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
@@ -32,13 +32,13 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
       i18nEnabled: true,
       defaultI18nLang: 'en'
     }),
-    JhipsterSampleApplicationSharedModule.forRoot(),
-    JhipsterSampleApplicationCoreModule,
-    JhipsterSampleApplicationHomeModule,
-    JhipsterSampleApplicationAccountModule,
+    JhipsterNetSampleApplicationSharedModule.forRoot(),
+    JhipsterNetSampleApplicationCoreModule,
+    JhipsterNetSampleApplicationHomeModule,
+    JhipsterNetSampleApplicationAccountModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
-    JhipsterSampleApplicationEntityModule,
-    JhipsterSampleApplicationAppRoutingModule
+    JhipsterNetSampleApplicationEntityModule,
+    JhipsterNetSampleApplicationAppRoutingModule
   ],
   declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   providers: [
@@ -65,7 +65,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
   ],
   bootstrap: [JhiMainComponent]
 })
-export class JhipsterSampleApplicationAppModule {
+export class JhipsterNetSampleApplicationAppModule {
   constructor(private dpConfig: NgbDatepickerConfig) {
     this.dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };
   }

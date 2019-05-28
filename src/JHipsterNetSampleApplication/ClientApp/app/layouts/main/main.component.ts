@@ -12,7 +12,7 @@ export class JhiMainComponent implements OnInit {
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
     let title: string =
-      routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'jhipsterSampleApplicationApp';
+        routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'JhipsterNetSampleApplicationApp';
     if (routeSnapshot.firstChild) {
       title = this.getPageTitle(routeSnapshot.firstChild) || title;
     }
