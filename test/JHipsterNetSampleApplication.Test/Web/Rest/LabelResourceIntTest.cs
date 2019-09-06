@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -106,11 +107,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             var label = _applicationDatabaseContext.Labels.ToList()[0];
 
             // Create an Operation to test the ManyToMany association
-            var operation = new Operation {
-                Date = DateTime.Now,
-                Description = "BBBBBBBBBB",
-                Amount = new decimal(2.0)
-            };
+            var operation = AssociatedEntityFactories.getDefaultAssociatedOperation();
             operation.Labels.Add(label);
             _applicationDatabaseContext.Operations.Add(operation);
             await _applicationDatabaseContext.SaveChangesAsync();
@@ -135,9 +132,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Label)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(o => o.Id == 1);
-            testOperation.Date.Should().Be(operation.Date);
-            testOperation.Description.Should().Be(operation.Description);
-            testOperation.Amount.Should().Be(operation.Amount);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Operation));
+            TestUtil.CompareObjects(testOperation, operation, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testOperation.Labels[0].Should().Be(testLabel);
         }
 
@@ -167,11 +163,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             await _applicationDatabaseContext.SaveChangesAsync();
 
             // Create an Operation to test the ManyToMany association
-            var operation = new Operation {
-                Date = DateTime.Now,
-                Description = "BBBBBBBBBB",
-                Amount = new decimal(2.0)
-            };
+            var operation = AssociatedEntityFactories.getDefaultAssociatedOperation();
             operation.Labels.Add(_label);
             _applicationDatabaseContext.Operations.Add(operation);
             await _applicationDatabaseContext.SaveChangesAsync();
@@ -193,9 +185,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Label)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(o => o.Id == operation.Id);
-            testOperation.Date.Should().Be(operation.Date);
-            testOperation.Description.Should().Be(operation.Description);
-            testOperation.Amount.Should().Be(operation.Amount);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Operation));
+            TestUtil.CompareObjects(testOperation, operation, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testOperation.Labels.Should().BeEmpty();
         }
 
@@ -303,11 +294,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             await _applicationDatabaseContext.SaveChangesAsync();
 
             // Create an Operation to test the ManyToMany association
-            var operation = new Operation {
-                Date = DateTime.UnixEpoch,
-                Description = "AAAAAAAAAA",
-                Amount = new decimal(1.0)
-            };
+            var operation = AssociatedEntityFactories.getDefaultAssociatedOperation();
             operation.Labels.Add(_label);
             _applicationDatabaseContext.Operations.Add(operation);
             await _applicationDatabaseContext.SaveChangesAsync();
@@ -325,11 +312,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // Create a second Operation to update the ManyToMany association
-            var updatedOperation = new Operation {
-                Date = DateTime.Now,
-                Description = "BBBBBBBBBB",
-                Amount = new decimal(2.0)
-            };
+            var updatedOperation = AssociatedEntityFactories.getUpdatedAssociatedOperation();
             updatedOperation.Labels.Add(updatedLabel);
             _applicationDatabaseContext.Operations.Add(updatedOperation);
             await _applicationDatabaseContext.SaveChangesAsync();
@@ -352,9 +335,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Label)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(o => o.Id == updatedOperation.Id);
-            testUpdatedOperation.Date.Should().Be(updatedOperation.Date);
-            testUpdatedOperation.Description.Should().Be(updatedOperation.Description);
-            testUpdatedOperation.Amount.Should().Be(updatedOperation.Amount);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Operation));
+            TestUtil.CompareObjects(testUpdatedOperation, updatedOperation, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testUpdatedOperation.Labels[0].Should().Be(testUpdatedLabel);
 
             // Validate the operation in the database and in particular the Label referenced
@@ -363,9 +345,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Label)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(o => o.Id == operation.Id);
-            testOperation.Date.Should().Be(operation.Date);
-            testOperation.Description.Should().Be(operation.Description);
-            testOperation.Amount.Should().Be(operation.Amount);
+            navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Operation));
+            TestUtil.CompareObjects(testOperation, operation, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testOperation.Labels[0].Should().Be(testUpdatedLabel);
         }
     }

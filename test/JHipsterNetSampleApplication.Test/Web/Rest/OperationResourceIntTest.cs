@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,6 +12,7 @@ using JHipsterNetSampleApplication.Test.Setup;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace JHipsterNetSampleApplication.Test.Web.Rest {
     public class OperationResourceIntTest {
@@ -93,10 +96,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task CreateOperationWithExistingReferencedEntity()
         {
             // Create a BankAccount to referenced
-            var bankAccount = new BankAccount {
-                Name = "AAAAAAAAAA",
-                Balance = new decimal(1.0)
-            };
+            var bankAccount = AssociatedEntityFactories.getDefaultAssociatedBankAccount();
             _applicationDatabaseContext.BankAccounts.Add(bankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
 
@@ -129,8 +129,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                 .Include(bA => bA.Operations)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(bA => bA.Id == bankAccount.Id);
-            testBankAccount.Name.Should().Be(bankAccount.Name);
-            testBankAccount.Balance.Should().Be(bankAccount.Balance);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(BankAccount));
+            TestUtil.CompareObjects(testBankAccount, bankAccount, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testBankAccount.Operations[0].Should().Be(testOperation);
         }
 
@@ -138,9 +138,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task CreateOperationWithManyToManyAssociation()
         {
             // Create a Label to test the ManyToMany association
-            var label = new Label {
-                Name = "AAAAAAAAAA"
-            };
+            var label = AssociatedEntityFactories.getDefaultAssociatedLabel();
             _applicationDatabaseContext.Labels.Add(label);
             await _applicationDatabaseContext.SaveChangesAsync();
 
@@ -172,7 +170,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Operation)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id == 1);
-            testLabel.Name.Should().Be(label.Name);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Label));
+            TestUtil.CompareObjects(testLabel, label, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testLabel.Operations[0].Should().Be(testOperation);
         }
 
@@ -197,10 +196,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task DeleteOperationWithExistingReferencedEntity()
         {
             // Create a BankAccount to referenced
-            var bankAccount = new BankAccount {
-                Name = "AAAAAAAAAA",
-                Balance = new decimal(1.0)
-            };
+            var bankAccount = AssociatedEntityFactories.getDefaultAssociatedBankAccount();
             _applicationDatabaseContext.BankAccounts.Add(bankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
 
@@ -227,8 +223,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                 .Include(bA => bA.Operations)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(bA => bA.Id == bankAccount.Id);
-            testBankAccount.Name.Should().Be(bankAccount.Name);
-            testBankAccount.Balance.Should().Be(bankAccount.Balance);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(BankAccount));
+            TestUtil.CompareObjects(testBankAccount, bankAccount, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testBankAccount.Operations.Should().BeEmpty();
         }
 
@@ -236,9 +232,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task DeleteOperationWithManyToManyAssociation()
         {
             // Create a Label to test the ManyToMany association
-            var label = new Label {
-                Name = "AAAAAAAAAA"
-            };
+            var label = AssociatedEntityFactories.getDefaultAssociatedLabel();
             _applicationDatabaseContext.Labels.Add(label);
             await _applicationDatabaseContext.SaveChangesAsync();
 
@@ -266,7 +260,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Operation)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id == label.Id);
-            testLabel.Name.Should().Be(label.Name);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Label));
+            TestUtil.CompareObjects(testLabel, label, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testLabel.Operations.Should().BeEmpty();
         }
 
@@ -378,14 +373,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task UpdateOperationWithExistingReferencedEntity()
         {
             // Create two BankAccounts to referenced
-            var bankAccount = new BankAccount {
-                Name = "AAAAAAAAAA",
-                Balance = new decimal(1.0)
-            };
-            var updatedBankAccount = new BankAccount {
-                Name = "BBBBBBBBBB",
-                Balance = new decimal(2.0)
-            };
+            var bankAccount = AssociatedEntityFactories.getDefaultAssociatedBankAccount();
+            var updatedBankAccount = AssociatedEntityFactories.getUpdatedAssociatedBankAccount();
             _applicationDatabaseContext.BankAccounts.Add(bankAccount);
             _applicationDatabaseContext.BankAccounts.Add(updatedBankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
@@ -429,8 +418,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                 .Include(bA => bA.Operations)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(bA => bA.Id == updatedBankAccount.Id);
-            testUpdatedBankAccount.Name.Should().Be(updatedBankAccount.Name);
-            testUpdatedBankAccount.Balance.Should().Be(updatedBankAccount.Balance);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(BankAccount));
+            TestUtil.CompareObjects(testUpdatedBankAccount, updatedBankAccount, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testUpdatedBankAccount.Operations[0].Should().Be(testOperation);
 
             // Validate the bankAccount in the database
@@ -438,8 +427,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                 .Include(bA => bA.Operations)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(bA => bA.Id == bankAccount.Id);
-            testBankAccount.Name.Should().Be(bankAccount.Name);
-            testBankAccount.Balance.Should().Be(bankAccount.Balance);
+            navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(BankAccount));
+            TestUtil.CompareObjects(testBankAccount, bankAccount, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testBankAccount.Operations.Should().BeEmpty();
         }
 
@@ -447,12 +436,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task UpdateOperationWithManyToManyAssociation()
         {
             // Create two Labels to test the ManyToMany association
-            var label = new Label {
-                Name = "AAAAAAAAAA"
-            };
-            var updatedLabel = new Label {
-                Name = "BBBBBBBBBB"
-            };
+            var label = AssociatedEntityFactories.getDefaultAssociatedLabel();
+            var updatedLabel = AssociatedEntityFactories.getUpdatedAssociatedLabel();
             _applicationDatabaseContext.Labels.Add(label);
             _applicationDatabaseContext.Labels.Add(updatedLabel);
             await _applicationDatabaseContext.SaveChangesAsync();
@@ -499,7 +484,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Operation)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id == 2);
-            testUpdatedLabel.Name.Should().Be(updatedLabel.Name);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Label));
+            TestUtil.CompareObjects(testUpdatedLabel, updatedLabel, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testUpdatedLabel.Operations[0].Should().Be(testOperation);
 
             // Validate the label in the database and in particular there is no more Operation referenced
@@ -508,7 +494,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                     .ThenInclude(operationLabel => operationLabel.Operation)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id == 1);
-            testLabel.Name.Should().Be(label.Name);
+            navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(Label));
+            TestUtil.CompareObjects(testLabel, label, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testLabel.Operations.Should().BeEmpty();
         }
 
@@ -516,10 +503,7 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
         public async Task UpdateOperationWithReferencedEntityToNull()
         {
             // Create a BankAccount to referenced
-            var bankAccount = new BankAccount {
-                Name = "AAAAAAAAAA",
-                Balance = new decimal(1.0)
-            };
+            var bankAccount = AssociatedEntityFactories.getDefaultAssociatedBankAccount();
             _applicationDatabaseContext.BankAccounts.Add(bankAccount);
             await _applicationDatabaseContext.SaveChangesAsync();
 
@@ -562,8 +546,8 @@ namespace JHipsterNetSampleApplication.Test.Web.Rest {
                 .Include(bA => bA.Operations)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(bA => bA.Id == bankAccount.Id);
-            testBankAccount.Name.Should().Be(bankAccount.Name);
-            testBankAccount.Balance.Should().Be(bankAccount.Balance);
+            HashSet<string> navProperties = TestUtil.GetNavigationProperties(_applicationDatabaseContext, typeof(BankAccount));
+            TestUtil.CompareObjects(testBankAccount, bankAccount, navProperties, _applicationDatabaseContext).Should().BeTrue();
             testBankAccount.Operations.Should().BeEmpty();
         }
     }
